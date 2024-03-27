@@ -1,5 +1,6 @@
 package com.example.interviewtask02.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,9 +10,10 @@ import com.example.interviewtask02.model.ModelUser
 
 class UserAdapter(
     private val context: Context,
-    private val userList: List<ModelUser>,
     private val listener: OnClickListener
 ) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+
+    private var userList: MutableList<ModelUser> = mutableListOf()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): UserViewHolder {
         return UserViewHolder(
@@ -33,7 +35,6 @@ class UserAdapter(
 
             tvName.text = user.name
             tvAddress.text = user.address
-            user.id
 
             imgDelete.setOnClickListener {
                 listener.onClick(user)
@@ -42,6 +43,12 @@ class UserAdapter(
     }
 
     class UserViewHolder(val binding: ListItemUserBinding) : RecyclerView.ViewHolder(binding.root)
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateList(userList: MutableList<ModelUser>) {
+        this.userList = userList
+        notifyDataSetChanged()
+    }
 
     interface OnClickListener {
         fun onClick(user: ModelUser)
